@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Knowho FAQ</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+      background: #fafafa;
+      color: #1a1a1a;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    header {
+      background: #fff8e8;
+      border-bottom: 1px solid #f0e0b0;
+      padding: 24px 20px;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      color: #f0a500;
+    }
+    .logo span { color: #1a1a1a; }
+
+    .header-subtitle {
+      font-size: 13px;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    .lang-toggle {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .lang-btn {
+      background: none;
+      border: 1px solid #f0e0b0;
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      color: #888;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+    .lang-btn.active {
+      background: #f0a500;
+      border-color: #f0a500;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    .page-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1a1a1a;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #f0a500;
+      margin-bottom: 8px;
+    }
+
+    .page-desc {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 32px;
+    }
+
+    .faq-list {
+      list-style: none;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid #eee;
+    }
+    .faq-item:first-child {
+      border-top: 1px solid #eee;
+    }
+
+    .faq-question {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 18px 0;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .q-badge, .a-badge {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+    .q-badge {
+      background: #f0a500;
+      color: #fff;
+    }
+    .a-badge {
+      border: 1.5px solid #f0a500;
+      color: #f0a500;
+    }
+
+    .q-text {
+      flex: 1;
+      font-size: 15px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .chevron {
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      margin-top: 4px;
+      color: #aaa;
+      transition: transform 0.25s ease;
+    }
+    .faq-item.open .chevron {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      display: none;
+      padding-bottom: 18px;
+      padding-left: 36px;
+    }
+    .faq-answer-inner {
+      display: flex;
+      gap: 12px;
+    }
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    .a-text {
+      font-size: 14px;
+      color: #444;
+      white-space: pre-line;
+      line-height: 1.75;
+    }
+
+    /* language switching */
+    .content-block { display: none; }
+    .content-block.active { display: block; }
+
+    footer {
+      text-align: center;
+      padding: 32px 20px;
+      font-size: 13px;
+      color: #888;
+      border-top: 1px solid #eee;
+    }
+    footer a {
+      color: #f0a500;
+      text-decoration: none;
+    }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Know<span>ho</span></div>
+  <div class="header-subtitle content-block active" data-lang="ko">자주 묻는 질문</div>
+  <div class="header-subtitle content-block" data-lang="ja">よくある質問</div>
+  <div class="header-subtitle content-block" data-lang="en">Frequently Asked Questions</div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="ko" onclick="setLang('ko')">한국어</button>
+    <button class="lang-btn" data-lang="ja" onclick="setLang('ja')">日本語</button>
+    <button class="lang-btn" data-lang="en" onclick="setLang('en')">English</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ── 한국어 ── -->
+  <div class="content-block active" data-lang="ko">
+    <h1 class="page-title">자주 묻는 질문</h1>
+    <p class="page-desc">Knowho 사용 중 궁금한 점을 모았어요.</p>
+    <ul class="faq-list">
+
+      <li class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+          <span class="q-badge">Q</span>
+          <span class="q-text">저장했는데 전화앱 통화목록에서 이름이 안 나타납니다.</span>
+          <svg class="chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <span class="a-badge">A</span>
+            <span class="a-text">연락처 화면 좌측 상단의 새로고침(↻) 버튼을 탭해 전화앱에 동기화해 주세요.
+
+그래도 나타나지 않으면 설정 → 전화 → 전화 차단 및 발신자 확인에서 Knowho가 활성화되어 있는지 확인해 주세요.</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+          <span class="q-badge">Q</span>
+          <span class="q-text">스팸방지 앱하고 같이 쓸 수 있나요?</span>
+          <svg class="chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <span class="a-badge">A</span>
+            <span class="a-text">iOS는 발신자 확인 앱을 하나만 활성화할 수 있습니다. 설정 → 전화 → 전화 차단 및 발신자 확인에서 다른 앱이 켜져 있으면 Knowho가 동작하지 않습니다.
+
+다른 앱을 비활성화하고 Knowho를 활성화해 주세요.</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+          <span class="q-badge">Q</span>
+          <span class="q-text">앱을 삭제하면 데이터도 삭제되나요?</span>
+          <svg class="chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <span class="a-badge">A</span>
+            <span class="a-text">네, 앱을 삭제하면 저장된 데이터도 모두 삭제됩니다.
+
+데이터를 보관하려면 삭제 전에 iCloud 백업 기능(프리미엄)을 이용해 주세요.</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+          <span class="q-badge">Q</span>
+          <span class="q-text">업그레이드하면 앱에 저장된 데이터가 삭제되나요?</span>
+          <svg class="chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <span class="a-badge">A</span>
+            <span class="a-text">아니요, 기존 데이터는 그대로 유지됩니다. 업그레이드는 저장 한도를 해제하는 것이며, 데이터는 삭제되지 않습니다.</span>
+          </div>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+
+  <!-- ── 日本語 ── -->
+  <div class="content-block" data-lang="ja">
+    <h1 class="page-title">よくある質問</h1>
+    <p class="page-desc">Knowhoのご利用中によくいただくご質問です。</p>
+    <ul class="faq-list">
+
+      <li class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+          <span class="q-badge">Q</span>
+          <span class="q-text">番号を保存したのに、電話アプリの履歴に名前が表示されません。</span>
+          <svg class="chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <span class="a-badge">A</span>
+            <span class="a-text">連絡先画面の左上にある更新ボタン（↻）をタップして電話アプリに同期してください。
+
+それでも表示されない場合は、設定 → 電話 → 迷惑電話・発信者番号通知 でKnowhoが有効になっているか確認してください。</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+          <span class="q-badge">Q</span>
+          <span class="q-text">スパム防止アプリと一緒に使えますか？</span>
+          <svg class="chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <span class="a-badge">A</span>
+            <span class="a-text">iOSでは発信者確認アプリを1つしか有効にできません。設定 → 電話 → 迷惑電話・発信者番号通知 で別のアプリが有効になっている場合、Knowhoは機能しません。
+
+他のアプリを無効にしてKnowhoを有効にしてください。</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+          <span class="q-badge">Q</span>
+          <span class="q-text">アプリを削除するとデータも削除されますか？</span>
+          <svg class="chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <span class="a-badge">A</span>
+            <span class="a-text">はい、アプリを削除すると保存されたデータもすべて削除されます。
+
+データを保持したい場合は、削除前にiCloudバックアップ機能（プレミアム）をご利用ください。</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+          <span class="q-badge">Q</span>
+          <span class="q-text">アップグレードするとデータが削除されますか？</span>
+          <svg class="chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <span class="a-badge">A</span>
+            <span class="a-text">いいえ、データはそのまま保持されます。アップグレードすると保存件数の制限が解除されるだけで、データは削除されません。</span>
+          </div>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+
+  <!-- ── English ── -->
+  <div class="content-block" data-lang="en">
+    <h1 class="page-title">FAQ</h1>
+    <p class="page-desc">Answers to the most common questions about Knowho.</p>
+    <ul class="faq-list">
+
+      <li class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+          <span class="q-badge">Q</span>
+          <span class="q-text">I saved a number, but the name doesn't appear in the Phone app's recent calls.</span>
+          <svg class="chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <span class="a-badge">A</span>
+            <span class="a-text">Tap the refresh button (↻) at the top left of the Contacts screen to sync with the Phone app.
+
+If it still doesn't work, go to Settings → Phone → Call Blocking & Identification and make sure Knowho is enabled.</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+          <span class="q-badge">Q</span>
+          <span class="q-text">Can I use Knowho alongside a spam-blocking app?</span>
+          <svg class="chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <span class="a-badge">A</span>
+            <span class="a-text">iOS allows only one caller identification app to be active at a time. If another app is enabled under Settings → Phone → Call Blocking & Identification, Knowho may not work.
+
+Disable the other app and enable Knowho to use it.</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+          <span class="q-badge">Q</span>
+          <span class="q-text">Will my data be deleted if I uninstall the app?</span>
+          <svg class="chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <span class="a-badge">A</span>
+            <span class="a-text">Yes, all saved data will be deleted when the app is uninstalled.
+
+To keep your data, use the iCloud Backup feature (Premium) before uninstalling.</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="faq-item">
+        <div class="faq-question" onclick="toggle(this)">
+          <span class="q-badge">Q</span>
+          <span class="q-text">Will upgrading to Premium delete my saved data?</span>
+          <svg class="chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <span class="a-badge">A</span>
+            <span class="a-text">No, your data is kept as-is. Upgrading only removes the contact limit — nothing is deleted.</span>
+          </div>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <a href="../privacy/">Privacy Policy</a> &nbsp;·&nbsp; © 2025 Knowho
+</footer>
+
+<script>
+  function setLang(lang) {
+    document.querySelectorAll('.content-block').forEach(el => {
+      el.classList.toggle('active', el.dataset.lang === lang);
+    });
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+    // 언어 전환 시 열린 항목 초기화
+    document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+  }
+
+  function toggle(questionEl) {
+    questionEl.closest('.faq-item').classList.toggle('open');
+  }
+</script>
+
+</body>
+</html>
