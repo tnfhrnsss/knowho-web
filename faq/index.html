@@ -494,6 +494,12 @@ You can check your iOS version in Settings → General → About.</span>
   function toggle(questionEl) {
     questionEl.closest('.faq-item').classList.toggle('open');
   }
+
+  (function () {
+    var params = new URLSearchParams(window.location.search);
+    var lang = params.get('lang');
+    if (lang === 'en') setLang('en');
+  })();
 </script>
 
 </body>

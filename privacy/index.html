@@ -148,6 +148,12 @@
     document.getElementById('btn-ko').className = 'lang-btn' + (lang === 'ko' ? ' active' : '');
     document.getElementById('btn-en').className = 'lang-btn' + (lang === 'en' ? ' active' : '');
   }
+
+  (function () {
+    var params = new URLSearchParams(window.location.search);
+    var lang = params.get('lang');
+    if (lang === 'en') setLang('en');
+  })();
 </script>
 
 </body>
